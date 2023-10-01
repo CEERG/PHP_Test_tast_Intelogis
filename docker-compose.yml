@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  nginx:
+    build:
+      context: ./nginx/.docker/
+      dockerfile: ./Dockerfile
+    container_name: nginx
+    hostname: nginx
+    ports:
+      - "80:80"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+  php:
+    build:
+      context: ./php/.docker/
+      dockerfile: ./Dockerfile
+    container_name: php
+    volumes:
+      - ./php:/php
+    environment:
+      XDEBUG_SESSION: 1
+      PHP_IDE_CONFIG: "serverName=php"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
